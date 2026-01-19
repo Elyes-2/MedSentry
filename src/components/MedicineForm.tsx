@@ -112,27 +112,29 @@ export function MedicineForm({ onClose, initialData }: MedicineFormProps) {
                 <label className={`block text-[10px] uppercase tracking-tighter mb-1 font-bold flex items-center gap-1 ${colorClass}`}>
                     {Icon && <Icon size={10} />} {label}
                 </label>
-                <div className="flex items-center bg-[var(--bg-input)] dark:bg-black/40 rounded-lg border border-[var(--border-color)] p-1 group hover:border-cyan-500/30 transition-colors">
+                <div className="flex items-center rounded-xl border border-[var(--border-color)] p-1.5 transition-all shadow-sm" style={{ background: 'var(--input-bg)' }}>
                     <button
                         type="button"
                         onClick={() => onChange(Math.max(min, val - 1).toString())}
-                        className="p-1 hover:bg-[var(--bg-input)] dark:hover:bg-white/5 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                        className="w-10 h-10 flex items-center justify-center rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent-cyan)] transition-all"
+                        style={{ background: 'var(--input-btn)' }}
                     >
-                        <Minus size={14} />
+                        <Minus size={16} />
                     </button>
                     <input
                         type="number"
                         value={value}
                         onChange={e => onChange(e.target.value)}
-                        className="bg-transparent border-none text-center w-full focus:ring-0 text-[var(--text-primary)] font-mono text-lg p-0"
+                        className="bg-transparent border-none text-center w-full focus:ring-0 text-[var(--text-primary)] font-mono text-xl font-bold p-0"
                         min={min}
                     />
                     <button
                         type="button"
                         onClick={() => onChange((val + 1).toString())}
-                        className="p-1 hover:bg-[var(--bg-input)] dark:hover:bg-white/5 rounded text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                        className="w-10 h-10 flex items-center justify-center rounded-lg text-[var(--text-secondary)] hover:text-[var(--accent-cyan)] transition-all"
+                        style={{ background: 'var(--input-btn)' }}
                     >
-                        <Plus size={14} />
+                        <Plus size={16} />
                     </button>
                 </div>
             </div>
@@ -143,13 +145,16 @@ export function MedicineForm({ onClose, initialData }: MedicineFormProps) {
         return (
             <button
                 onClick={() => setIsOpen(true)}
-                className="w-full h-32 glass hover:bg-[var(--bg-input)] dark:hover:bg-white/5 rounded-2xl flex flex-col items-center justify-center gap-3 text-[var(--text-secondary)] hover:text-cyan-500 transition-all group"
-                style={{ borderStyle: 'dashed', borderWidth: '2px', borderColor: 'var(--border-color)' }}
+                className="w-full h-40 glass-panel flex flex-col items-center justify-center gap-4 text-[var(--text-secondary)] hover:text-cyan-500 transition-all group border-dashed hover:border-solid hover:scale-[1.02]"
+                style={{ borderWidth: '2px', borderColor: 'var(--border-color)' }}
             >
-                <div className="p-4 rounded-full bg-[var(--bg-input)] dark:bg-white/5 group-hover:bg-cyan-500/20 text-[var(--text-secondary)] group-hover:text-cyan-500 transition-colors">
-                    <Plus size={32} />
+                <div className="w-16 h-16 rounded-2xl bg-[var(--bg-input)] dark:bg-white/5 group-hover:bg-cyan-500/10 flex items-center justify-center transition-all group-hover:rotate-90">
+                    <Plus size={32} className="text-[var(--text-secondary)] group-hover:text-cyan-500 transition-colors" />
                 </div>
-                <span className="font-semibold tracking-wide">ADD MEDICINE</span>
+                <div className="text-center">
+                    <span className="block font-bold tracking-[0.2em] text-[10px] uppercase opacity-60 group-hover:opacity-100" style={{ fontFamily: 'Outfit, sans-serif' }}>Initialize New</span>
+                    <span className="block text-xl font-bold tracking-tight text-[var(--text-primary)]" style={{ fontFamily: 'Outfit, sans-serif' }}>Prescription</span>
+                </div>
             </button>
         )
     }
@@ -170,7 +175,7 @@ export function MedicineForm({ onClose, initialData }: MedicineFormProps) {
                 {/* Basic Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="md:col-span-2">
-                        <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2 font-bold">Medicine Name</label>
+                        <label className="block text-xs uppercase tracking-widest text-[var(--text-secondary)] mb-2 font-bold opacity-80">Medicine Name</label>
                         <input
                             type="text"
                             value={name}
@@ -199,7 +204,7 @@ export function MedicineForm({ onClose, initialData }: MedicineFormProps) {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-[10px] uppercase tracking-tighter text-gray-500 mb-1 font-bold flex items-center gap-1">
+                        <label className="block text-[10px] uppercase tracking-widest text-[var(--text-secondary)] mb-1 font-bold flex items-center gap-1 opacity-80">
                             <DollarSign size={10} /> Price ($)
                         </label>
                         <input
@@ -219,8 +224,8 @@ export function MedicineForm({ onClose, initialData }: MedicineFormProps) {
                     />
                 </div>
 
-                <div className="bg-[var(--bg-input)] dark:bg-black/30 rounded-xl p-4 border border-[var(--border-color)]">
-                    <label className="block text-[10px] uppercase tracking-widest text-gray-500 mb-4 font-bold text-center">Dosage Schedule</label>
+                <div className="border-t border-[var(--border-color)] pt-6 mt-2">
+                    <label className="block text-[11px] uppercase tracking-[0.2em] text-[var(--text-secondary)] mb-6 font-bold text-center opacity-80" style={{ fontFamily: 'Outfit, sans-serif' }}>Dosage Schedule</label>
                     <div className="grid grid-cols-3 gap-3">
                         <CounterInput
                             label="Morning"

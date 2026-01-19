@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -12,6 +13,15 @@
   --border-color: rgba(255, 255, 255, 0.1);
   --glass-shadow: rgba(0, 0, 0, 0.2);
 
+  /* Component Specifics - Dark Defaults */
+  --card-title: #ffffff;
+  --bar-track: #1f2937;
+  --projection-bg: rgba(0, 0, 0, 0.4);
+
+  --input-bg: rgba(0, 0, 0, 0.4);
+  --input-btn: rgba(255, 255, 255, 0.05);
+  --input-btn-hover: rgba(255, 255, 255, 0.1);
+
   /* Neons - Shared */
   --accent-cyan: #06b6d4;
   --accent-purple: #8b5cf6;
@@ -21,33 +31,48 @@
 }
 
 /* Light Mode Overrides */
-html.light :root {
+html.light {
   --bg-color: #f8fafc;
-  /* Lighter/cleaner slate */
-  --sidebar-bg: rgba(255, 255, 255, 0.9);
-  --card-bg: rgba(255, 255, 255, 1);
+  --sidebar-bg: #ffffff;
+  --card-bg: #ffffff;
+  /* Solid white for Light Mode */
   --text-primary: #0f172a;
-  /* Slate 900 for high contrast */
   --text-secondary: #475569;
-  /* Slate 600 */
 
-  --bg-input: #ffffff;
-  --border-color: rgba(0, 0, 0, 0.08);
-  --glass-shadow: rgba(0, 0, 0, 0.03);
+  --bg-input: #f1f5f9;
+  --border-color: #e2e8f0;
+  --glass-shadow: rgba(0, 0, 0, 0.04);
+
+  /* Component Specifics - Light Overrides */
+  --card-title: #334155;
+  --bar-track: #e2e8f0;
+  --projection-bg: #ffffff;
+
+  --input-bg: #f8fafc;
+  --input-btn: #ffffff;
+  --input-btn-hover: #f1f5f9;
+
+  --accent-cyan: #0891b2;
+  --accent-purple: #7c3aed;
+  --accent-success: #059669;
+  --accent-danger: #e11d48;
+  --accent-warning: #d97706;
 }
 
 html.light body {
-  background-image:
-    radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+  background-image: none;
+  /* Pure solid background for max clarity */
+  background-color: var(--bg-color);
 }
 
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
   background-color: var(--bg-color);
   color: var(--text-primary);
-  /* Subtle mesh gradient */
+  /* Mesh gradient only for Dark Mode */
   background-image:
     radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
@@ -76,14 +101,109 @@ body {
   border: 1px solid var(--border-color);
 }
 
+html.light .glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .glass-panel {
   background: var(--card-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: 20px;
+  /* Softer corners */
   box-shadow: 0 8px 32px var(--glass-shadow);
   color: var(--text-primary);
+  padding: 24px;
+  /* Standardize padding */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glass Shine Effect */
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+      transparent,
+      rgba(255, 255, 255, 0.03),
+      transparent);
+  transform: rotate(45deg);
+  transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.glass-panel:hover::after {
+  left: 120%;
+  top: 120%;
+}
+
+html.light .glass-panel::after {
+  display: none;
+  /* Disable shine sweep in Light Mode */
+}
+
+html.light .glass-panel {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 4px 20px -5px var(--glass-shadow);
+}
+
+/* Premium Tags - 8% wash style */
+.tag-premium {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tag-blue {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.tag-orange {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.tag-purple {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+}
+
+.tag-cyan {
+  background: rgba(6, 182, 212, 0.1);
+  color: #06b6d4;
+}
+
+html.light .tag-blue {
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+}
+
+html.light .tag-orange {
+  background: rgba(249, 115, 22, 0.08);
+  color: #ea580c;
+}
+
+html.light .tag-purple {
+  background: rgba(168, 85, 247, 0.08);
+  color: #9333ea;
+}
+
+html.light .tag-cyan {
+  background: rgba(6, 182, 212, 0.08);
+  color: #0891b2;
 }
 
 .icon-glow {
@@ -91,7 +211,8 @@ body {
 }
 
 html.light .icon-glow {
-  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.4));
+  filter: none;
+  /* No glows in minimalist light mode */
 }
 
 .neon-text-cyan {
@@ -110,9 +231,18 @@ html.light .icon-glow {
   box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+html.light .btn-primary {
+  background: #2563eb;
+  /* Clean Primary Blue */
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+html.light .btn-primary:hover {
+  background: #1d4ed8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -145,6 +275,34 @@ html.light .icon-glow {
   outline: none;
   border-color: var(--accent-cyan);
   box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+}
+
+/* Theme-aware Status Shadows */
+.bg-emerald-500 {
+  box-shadow: none;
+  transition: box-shadow 0.3s;
+}
+
+.bg-amber-500 {
+  box-shadow: none;
+  transition: box-shadow 0.3s;
+}
+
+.bg-red-500 {
+  box-shadow: none;
+  transition: box-shadow 0.3s;
+}
+
+html.dark .bg-emerald-500 {
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+html.dark .bg-amber-500 {
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+html.dark .bg-red-500 {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
 }
 
 /* Hide number input arrows */

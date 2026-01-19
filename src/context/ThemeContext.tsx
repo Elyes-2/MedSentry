@@ -17,12 +17,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         const root = window.document.documentElement;
+        console.log('[ThemeContext] Applying theme:', theme);
         root.classList.remove("light", "dark");
         root.classList.add(theme);
+        console.log('[ThemeContext] Root classes:', root.className);
         localStorage.setItem("theme", theme);
     }, [theme]);
 
     const toggleTheme = () => {
+        console.log('[ThemeContext] Toggling from:', theme);
         setTheme((prev) => (prev === "dark" ? "light" : "dark"));
     };
 

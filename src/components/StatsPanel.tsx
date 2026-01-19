@@ -1,5 +1,5 @@
 import { useMedicine } from '../context/MedicineContext';
-import { DollarSign, TrendingUp } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 export function StatsPanel() {
     const { medicines } = useMedicine();
@@ -22,14 +22,14 @@ export function StatsPanel() {
                 <div className="bg-[var(--bg-input)] dark:bg-white/5 rounded-lg p-3 border border-[var(--border-color)]">
                     <div className="text-xs text-[var(--text-secondary)] uppercase">Daily</div>
                     <div className="text-xl font-mono text-[var(--text-primary)] flex items-center">
-                        <DollarSign size={16} className="text-emerald-500" />
+                        <span className="text-emerald-500 text-sm opacity-80 mr-0.5">$</span>
                         {(dailyCost / 100).toFixed(2)}
                     </div>
                 </div>
                 <div className="bg-[var(--bg-input)] dark:bg-white/5 rounded-lg p-3 border border-[var(--border-color)]">
                     <div className="text-xs text-[var(--text-secondary)] uppercase">Monthly</div>
                     <div className="text-xl font-mono text-[var(--text-primary)] flex items-center">
-                        <DollarSign size={16} className="text-purple-500" />
+                        <span className="text-purple-500 text-sm opacity-80 mr-0.5">$</span>
                         {(monthlyCost / 100).toFixed(2)}
                     </div>
                 </div>

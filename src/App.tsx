@@ -2,6 +2,7 @@ import { MedicineProvider, useMedicine } from './context/MedicineContext';
 import { MedicineForm } from './components/MedicineForm';
 import { MedicineCard } from './components/MedicineCard';
 import { StatsPanel } from './components/StatsPanel';
+import { DailyIntakePanel } from './components/DailyIntakePanel';
 import { Activity, ShieldCheck, Sun, Moon } from 'lucide-react';
 import { useState } from 'react';
 import type { Medication } from './types';
@@ -11,7 +12,10 @@ function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   return (
     <button
-      onClick={toggleTheme}
+      onClick={() => {
+        console.log('[ThemeToggle] Button clicked');
+        toggleTheme();
+      }}
       className="p-2 rounded-full border border-white/10 hover:border-cyan-500/50 hover:bg-white/5 transition-all group"
       title="Toggle Theme"
     >
@@ -24,47 +28,50 @@ function ThemeToggle() {
   );
 }
 
-function Dashboard() {
+import { ToastProvider, useToast } from './context/ToastContext';
+import { ToastContainer } from './components/ToastContainer';
+
+// Inner component to use the hook
+function MainContent() {
   const { medicines, deleteMedicine, restockMedicine, takeDose } = useMedicine();
   const [editingMed, setEditingMed] = useState<Medication | null>(null);
-
+  const { showToast } = useToast();
   const totalMeds = medicines.length;
+
+  const handleTestAlert = async () => {
+    try {
+      const res = await window.ipcRenderer.invoke('medications:trigger-test-alert');
+      if (res.alerted.length > 0) {
+        showToast(`Alert Triggered for: ${res.alerted.join(', ')}`, 'success');
+      } else {
+        showToast("No medications are below your alert thresholds.", 'info');
+      }
+    } catch (e) {
+      console.error(e);
+      showToast("Error triggering test. Check console.", 'error');
+    }
+  };
 
   return (
     <div className="min-h-screen p-8 pb-32 transition-colors duration-300">
       {/* Header */}
       <header className="mb-12 flex justify-between items-end max-w-5xl mx-auto border-b border-[var(--border-color)] pb-6">
         <div>
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-600 mb-2 tracking-tight">
-            MED.OS
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-600 mb-2 tracking-tighter" style={{ fontFamily: 'Outfit, sans-serif' }}>
+            MedSentry
           </h1>
-          <p className="text-gray-500 font-mono text-sm tracking-widest uppercase flex items-center gap-2">
-            <ShieldCheck size={14} className="text-emerald-500" /> System Online v2.0
-          </p>
         </div>
         <div className="flex items-center gap-6">
           <ThemeToggle />
           <button
-            onClick={async () => {
-              try {
-                const res = await window.ipcRenderer.invoke('medications:trigger-test-alert');
-                if (res.alerted.length > 0) {
-                  alert(`Alert Triggered for: ${res.alerted.join(', ')}. Check your email/terminal.`);
-                } else {
-                  alert("No medications are below your alert thresholds. No email sent.");
-                }
-              } catch (e) {
-                console.error(e);
-                alert("Error triggering test. Check console.");
-              }
-            }}
-            className="text-xs border border-white/10 hover:border-cyan-500/50 px-3 py-1 rounded-full text-gray-500 hover:text-cyan-400 transition-all font-mono uppercase tracking-tighter"
+            onClick={handleTestAlert}
+            className="text-xs border border-[var(--border-color)] px-3 py-1 rounded-full text-[var(--text-secondary)] hover:text-[var(--accent-cyan)] transition-all font-mono uppercase tracking-tighter"
           >
             Run Alert Test
           </button>
-          <div className="text-right hidden md:block border-l border-white/10 pl-6 dark:text-white text-gray-800">
-            <div className="text-2xl font-mono font-bold">{totalMeds}</div>
-            <div className="text-xs text-gray-500 uppercase tracking-wider">Active Prescriptions</div>
+          <div className="text-right hidden md:block border-l border-[var(--border-color)] pl-6 text-[var(--text-primary)]">
+            <div className="text-2xl font-mono font-bold" style={{ color: 'var(--text-primary)' }}>{totalMeds}</div>
+            <div className="text-xs text-[var(--text-secondary)] uppercase tracking-wider">Active Prescriptions</div>
           </div>
         </div>
       </header>
@@ -79,22 +86,35 @@ function Dashboard() {
                 onClose={() => setEditingMed(null)}
               />
 
+              <DailyIntakePanel />
               <StatsPanel />
 
               {/* Mini List */}
               <div className="glass-panel p-6 mt-6">
-                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <Activity size={14} /> Inventory Stream
+                <h3 className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-[0.2em] mb-4 flex items-center gap-2 opacity-80">
+                  <Activity size={14} className="text-[var(--accent-cyan)]" /> Inventory Stream
                 </h3>
                 <div className="space-y-3">
-                  {medicines.map(med => (
-                    <div key={med.id} className="flex justify-between items-center text-sm group">
-                      <span className="text-gray-400 group-hover:text-cyan-500 transition-colors cursor-default">{med.name}</span>
-                      <span className={`font-mono ${med.total_stock < med.alert_threshold ? 'text-red-500' : 'text-gray-600 dark:text-gray-400'}`}>
-                        {med.total_stock}
-                      </span>
-                    </div>
-                  ))}
+                  {medicines.map(med => {
+                    const p = Math.min((med.total_stock / med.package_size) * 100, 100);
+                    const isLow = med.total_stock <= med.alert_threshold;
+                    return (
+                      <div key={med.id} className="group p-2 rounded-xl transition-all cursor-default">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-[var(--text-secondary)] font-medium group-hover:text-[var(--accent-cyan)] transition-colors cursor-default truncate flex-1">{med.name}</span>
+                          <span className={`font-mono font-bold ${isLow ? 'text-red-500 animate-pulse' : 'text-[var(--text-primary)] opacity-40'}`}>
+                            {med.total_stock}
+                          </span>
+                        </div>
+                        <div className="h-[2px] w-full bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full transition-all duration-700 ${isLow ? 'bg-red-500' : 'bg-cyan-500/40'}`}
+                            style={{ width: `${p}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                   {medicines.length === 0 && <span className="text-gray-600 text-sm italic">No data streams active.</span>}
                 </div>
               </div>
@@ -131,9 +151,12 @@ function Dashboard() {
 function App() {
   return (
     <ThemeProvider>
-      <MedicineProvider>
-        <Dashboard />
-      </MedicineProvider>
+      <ToastProvider>
+        <MedicineProvider>
+          <MainContent />
+          <ToastContainer />
+        </MedicineProvider>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

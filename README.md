@@ -1,55 +1,93 @@
 # MedSentry
 
-**MedSentry** is a modern, Electron-based desktop application designed to help users track their medication inventory and adhere to their prescribed dosage schedules. Built with a focus on user experience, it combines a premium aesthetic with smart tracking features.
+**MedSentry** is a premium, Electron-based desktop application designed for precision medication tracking. It combines a high-end aesthetic with intelligent inventory management and automated alerting systems, ensuring you never miss a dose or run out of essential stock.
 
-## Features
+## 🌟 Visual Overview
 
-- **Inventory Management**: Keep track of your medicine stock levels in real-time.
-- **Smart Tracking**: Automated depletion logic to ensure stock counts are always accurate.
-- **Email Alerts**: Receive automated email notifications when stock runs low (powered by Resend).
-- **Premium UI**: specific design with a sleek dark mode, neon accents, and glassmorphism effects.
-- **Desktop Experience**: Native desktop application performance and integration using Electron.
+<div align="center">
 
-## Tech Stack
+### Main Dashboard
+![Main Dashboard](docs/images/dashboard.png)
 
-- **Core**: [Electron](https://www.electronjs.org/), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
+*Intuitive control center for all prescriptions*
+
+---
+
+### Daily Schedule & Insights
+![Daily Intake](docs/images/daily_intake.png)
+
+*Track morning, noon, and night dosages with financial forecasting*
+
+---
+
+### Prescription Management
+![Add Medicine](docs/images/add_medicine.png)
+
+*Seamlessly add and configure new medication trackers*
+
+---
+
+### Automated Email Alerts
+![Email Alert](docs/images/email_alert.png)
+
+*Receive real-time stock warnings powered by Resend*
+
+</div>
+
+## ✨ Key Features
+
+- **🛡️ Inventory Management**: Real-time tracking of medicine stock levels with visual progress bars.
+- **🧠 Smart Projections**: Intelligent logic that calculates when your stock will run out based on dosage.
+- **📧 Automated Alerts**: Receive "Low Stock" and "Critical" notifications directly to your email.
+- **🌓 Dual Theme Support**: Seamlessly switch between sleek Dark mode and clean Light mode.
+- **💎 Premium UI/UX**: Professional design featuring glassmorphism and neon accents.
+- **📈 Financial Insights**: Track daily and monthly costs associated with your prescriptions.
+- **💻 Native Experience**: High-performance desktop integration using Electron.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Electron](https://www.electronjs.org/)
+- **Frontend**: [React](https://react.dev/) / [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [TailwindCSS](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
 - **Email Service**: [Resend](https://resend.com/)
-- **Date Handling**: [date-fns](https://date-fns.org/)
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure you have Node.js installed on your system.
+Ensure you have [Node.js](https://nodejs.org/) installed on your system.
 
 ### Installation
 
-1.  Clone the repository.
-2.  Install dependencies:
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-repo/medsentry.git
+    cd med
+    ```
 
+2.  **Install dependencies**:
     ```bash
     npm install
     ```
 
-3.  Set up your environment variables:
-    - Create a `.env` file in the root directory.
-    - Add necessary keys (e.g., `RESEND_API_KEY`).
+3.  **Configure Environment**:
+    Create a `.env` file in the root directory and add the following:
+    ```env
+    RESEND_API_KEY=your_resend_api_key_here
+    EMAIL_RECEIVER=your_email@example.com
+    ```
 
-### Development
+### Running Locally
 
-To run the application in development mode:
-
+To start the application in development mode:
 ```bash
 npm run dev
 ```
 
-### Build
-
-To build the application for production:
-
+To build for production:
 ```bash
 npm run build
 ```
+
+---
+
